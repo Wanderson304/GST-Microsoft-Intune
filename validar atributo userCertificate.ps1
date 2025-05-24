@@ -9,3 +9,7 @@ $results = $computers | Select-Object Name, @{Name="UserCertificatePresent";Expr
 
 # Exibe os resultados em formato de tabela
 $results | Format-Table -AutoSize
+
+# Caso queira jogar o resultado para um arquivo .csv descomente a linha 14.
+#Será gerado um arquivo chamado UserCertificateReport.csv na pasta C:\
+#$results | Export-Csv -Path "C:\UserCertificateReport.csv" -NoTypeInformation -Encoding UTF8
