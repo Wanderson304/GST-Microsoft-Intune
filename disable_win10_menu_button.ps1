@@ -1,19 +1,19 @@
-# Executar como administrador
-# Desativa o acesso ao menu iniciar via política de registro
 
-Write-Output "Aplicando restrições ao menu Iniciar..."
+#Script PowerShell – Desativar o Menu Iniciar (Modo Silencioso)
 
 # Caminho da chave de política
 $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
 
-# Cria o caminho, se não existir
+# Cria a chave se não existir
 If (-Not (Test-Path $regPath)) {
     New-Item -Path $regPath -Force | Out-Null
 }
 
-# Define o valor de desabilitar menu iniciar
-New-ItemProperty -Path $regPath -Name "NoStartMenuMorePrograms" -PropertyType DWord -Value 1 -Force
-New-ItemProperty -Path $regPath -Name "NoStartMenuMFUprogramsList" -PropertyType DWord -Value 1 -Force
-New-ItemProperty -Path $regPath -Name "LockedStartLayout" -PropertyType DWord -Value 1 -Force
+# Define as políticas para restringir o menu Iniciar
+New-ItemProperty -Path $regPath -Name "NoStartMenuMorePrograms" -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue
+New-ItemProperty -Path $regPath -Name "NoStartMenuMFUprogramsList" -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue
+New-ItemProperty -Path $regPath -Name "LockedStartLayout" -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue
 
-Write-Output "Alterações aplicadas. Reinicie o Explorer ou o sistema para ver efeito."
+# Reinicia o Windows Explorer de forma silenciosa
+Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
+Start-Process explorer.exe
